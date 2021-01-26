@@ -1,0 +1,10 @@
+
+- https://github.com/golang/lint/issues/486
+
+- https://stackoverflow.com/questions/54548441/composite-literal-uses-unkeyed-fields
+
+
+time {
+- https://stackoverflow.com/questions/5885486/get-current-time-as-formatted-string-in-go
+- https://flaviocopes.com/go-date-time-format/
+}

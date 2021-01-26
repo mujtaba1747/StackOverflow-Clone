@@ -1,0 +1,27 @@
+Actual DB 
+
+mysql> delimiter ^^
+mysql> create trigger ans_before_delete
+    -> before delete on answer
+    -> for each row
+    -> begin
+    ->  delete from upvote where upvote.ans_id = old.ans_id;
+    -> end ^^
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> delimiter ;
+
+
+
+
+
+mysql> delimiter ^^
+mysql> create trigger ques_before_delete
+    -> before delete on question
+    -> for each row
+    -> begin
+    ->  delete from answer where answer.ques_id = old.ques_id;
+    -> end ^^
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> delimiter ;

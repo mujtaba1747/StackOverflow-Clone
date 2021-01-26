@@ -1,0 +1,48 @@
+var myHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	user := r.Context().Value("user")
+	fmt.Fprintf(w, "This is an authenticated request")
+	fmt.Fprintf(w, "Claim content:\n")
+	for k, v := range user.(*jwt.Token).Claims.(jwt.MapClaims) {
+		fmt.Fprintf(w, "%s :\t%#v\n", k, v)
+	}
+})
+var Jwt = jwtmiddleware.New(jwtmiddleware.Options{
+	ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
+		return []byte("My Secret"), nil
+	},
+	SigningMethod: jwt.SigningMethodHS256,
+	Extractor:     myExtractor,
+	ErrorHandler:  myErrorHandler,
+})
+
+// My Custom type TokenExtractor func(r *http.Request) (string, error)
+// For extracting from User.Token
+// Todo : Later, check auth header as well
+var myExtractor jwtmiddleware.TokenExtractor = func(r *http.Request) (string, error) {
+	user := &entity.User{}
+	if err := json.NewDecoder(r.Body).Decode(user); err != nil || user.Token == "" {
+		log.Println("Bad / No Token request in JWT wrapper", err)
+		return "", nil
+	}
+	return user.Token, nil
+}
+var myErrorHandler jwtmiddleware.Errorhandler = func(w http.ResponseWriter, r *http.Request, err string) {
+	// http.Error(w, "Token Error / Expired, Login Again", http.StatusUnauthorized)
+	w.WriteHeader(http.StatusUnauthorized)
+	jsonErr := `{"ClientResp" : "Token Expired/Invalid Login Again"}`
+	json.NewEncoder(w).Encode(&jsonErr)
+
+}
+
+func main() {
+	middle := jwtmiddleware.New(jwtmiddleware.Options{
+		ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
+			return []byte("My Secret"), nil
+		},
+		SigningMethod: jwt.SigningMethodHS256,
+		Extractor:     MyExtractor,
+		ErrorHandler:  myErrorHandler,
+	})
+	app := middle.Handler(myHandler)
+	http.ListenAndServe("0.0.0.0:8080", app)
+}
