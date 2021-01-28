@@ -4,3 +4,5 @@ It supports features like ask question, answer question etc.
 Backend - Go, NodeJS
 Frontend - NodeJS
 Database - MySQL
+
+![Image](/Screenshots/homepage.png?raw=true&sanitize=true)
