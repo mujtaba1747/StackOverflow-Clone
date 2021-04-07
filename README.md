@@ -4,7 +4,7 @@ It supports features like ask a question, answer a question, upvote, downvote et
 
 Backend - Go, NodeJS
 
-Frontend - NodeJS
+Frontend - React
 
 Database - MariaDB
 
