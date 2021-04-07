@@ -6,7 +6,7 @@ Backend - Go, NodeJS
 
 Frontend - NodeJS
 
-Database - MySQL
+Database - MariaDB
 
 ![Image](/Screenshots/homepage.png?raw=true&sanitize=true)
 
