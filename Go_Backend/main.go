@@ -61,7 +61,7 @@ var (
 	findUidbyunameQuery string = "SELECT UID from users where username = ?"
 	addquesQuery     string = "INSERT INTO question (ques_body, is_anon, ques_date_creation, UID) VALUES (?,?,?,?)"
 	findqidQuery     string = "SELECT ques_id from question where ques_date_creation = ? AND UID = ?"
-	selectAllQuestions string = "CALL GetQuestions()"
+	selectAllQuestions string = "SELECT * from question"
 	findaidQuery string = "SELECT ans_id from answer where ans_date_creation = ? AND ques_id = ? AND UID = ?"
 	addansQuery string = "INSERT INTO answer (ques_id, ans_body, is_anon, ans_date_creation, UID) VALUES (?,?,?,?,?)"
 	checkifqidexistQuery string = "SELECT ques_id from question where ques_id = ?"
@@ -101,12 +101,13 @@ func main() {
 	log.Fatalln(srv.ListenAndServe())
 }
 
-var pass string = "password"
+var pass string = "root"
 var dbname string = "qaforum"
 
 func startDB() { // Opens connection to a SQL Database
 	var err error
-	db, err = sql.Open("mysql", "root:"+pass+"@tcp(127.0.0.1:3306)/"+dbname+"?charset=utf8&parseTime=true")
+	db, err = sql.Open("mysql", "root:"+pass+"@/"+dbname+"?charset=utf8&parseTime=true")
+	
 	if err != nil {
 		log.Fatalln(err)
 	}
